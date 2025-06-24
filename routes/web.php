@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
+// <<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
-=======
->>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
+// =======
+// >>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +41,3 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
-=======
-});
->>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
