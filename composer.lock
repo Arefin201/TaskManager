@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "0f28b2b53739478e11d75c45a7cd25fb",
+=======
+    "content-hash": "bfe12996eeecb6fdc8713a9fd9d431f8",
+>>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
     "packages": [
         {
             "name": "brick/math",
@@ -2879,6 +2883,7 @@
         },
         {
             "name": "psy/psysh",
+<<<<<<< HEAD
             "version": "v0.12.9",
             "source": {
                 "type": "git",
@@ -2889,6 +2894,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1b801844becfe648985372cb4b12ad6840245ace",
                 "reference": "1b801844becfe648985372cb4b12ad6840245ace",
+=======
+            "version": "v0.12.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "85057ceedee50c49d4f6ecaff73ee96adb3b3625"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/85057ceedee50c49d4f6ecaff73ee96adb3b3625",
+                "reference": "85057ceedee50c49d4f6ecaff73ee96adb3b3625",
+>>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
                 "shasum": ""
             },
             "require": {
@@ -2952,9 +2969,15 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.9"
             },
             "time": "2025-06-23T02:35:06+00:00"
+=======
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.8"
+            },
+            "time": "2025-03-16T03:05:19+00:00"
+>>>>>>> 5f4ca15e0088d935f8e297467f94f29c41419ad0
         },
         {
             "name": "ralouphie/getallheaders",
