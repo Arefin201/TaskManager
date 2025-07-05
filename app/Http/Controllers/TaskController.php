@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -10,41 +11,23 @@ class TaskController extends Controller
     // Get all tasks
     public function index()
     {
-        $tasks = Task::with('user')->paginate(10);
-        return response()->json([
-            'status' => true,
-            'message' => 'Tasks retrieved successfully',
-            'data' => $tasks,
+        $tasks = Task::all();
+         return response()->json([
+            'status'=> true,
+            'message'=> 'Tasks data',
+            'data'=> $tasks,
         ], 200);
     }
 
-    // public function userTasks()
-    // {
-    //     $tasks = Task::where('user_id', auth()->id())->paginate(10);
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'User tasks retrieved successfully',
-    //         'data' => $tasks,
-    //     ], 200);
-    // }
-
-    // Show task creation form
-    public function create()
-    {
-        return view('tasks.create');
-    }
-
     // Create new task
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'type' => 'required',
             'deadline' => 'required|date',
-            'category' => 'required|in:work,personal,education,health',
-            'priority' => 'required|in:low,medium,high',
-            'status' => 'required|in:pending,completed',
-            'progress' => 'required|integer|between:0,100'
+            'priority' => 'required',
         ]);
 
         $task = Task::create(array_merge(
@@ -59,56 +42,75 @@ class TaskController extends Controller
         ], 201);
     }
 
-    // Get single task
-    public function show(Task $task)
-    {
+    public function taskDelete(Request $request){
+        $id = $request->id;
+        Task::destroy($id);
+        return response()->json(['message'=>'Delete success', 'data' => '']);
+    }
+
+    public function getSingleTask(Request $request){
+        $taskId = $request->id;
+
+        $task = Task::find($taskId);
+
         return response()->json([
             'status' => true,
-            'message' => 'Task retrieved successfully',
-            'data' => $task->load('user'),
+            'message' => "Single Task",
+            'data' => $task
         ], 200);
+
     }
 
-    // Show task edit form
-    public function edit(Task $task)
-    {
-        $this->authorize('update', $task);
-        return view('tasks.edit', compact('task'));
-    }
-
-
-    // Update task
-    public function update(Request $request, Task $task)
-    {
-        $validated = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
-            'deadline' => 'sometimes|date',
-            'category' => 'sometimes|in:work,personal,education,health',
-            'priority' => 'sometimes|in:low,medium,high',
-            'status' => 'sometimes|in:pending,completed',
-            'progress' => 'sometimes|integer|between:0,100'
+    public function updateTask(Request $request){
+         $validation = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'type' => 'required',
+            'priority' => 'required',
+            'deadline' => 'required',
         ]);
 
-        $task->update($validated);
+        if($validation->fails()){
+            return response()->json([
+                'status'=> false,
+                'message'=> 'validation error',
+                'errors'=> $validation->errors()
+            ], 400);
+        }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Task updated successfully',
-            'data' => $task,
-        ], 200);
+        $task = Task::findOrFail($request->id);
+
+        $task->update($request->all());
+
+        return response()->json(['message' => 'update success', 'data' => $task]);
+
     }
 
-    // Delete task
-    public function destroy(Task $task)
-    {
-        $task->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Task deleted successfully',
-        ], 200);
+    public function updateStatus(Request $request){
+        $id = $request->id;
+        $task = Task::findOrFail($id);
+        $task->update(['status' => 'in-progress']);
+        return response()->json(['message' => 'Status Updated', 'data'=>$task]);
     }
 
+    public function undoTaskFromInProgress(Request $request){
+        $id = $request->id;
+        $task = Task::findOrFail($id);
+        $task->update(['status' => 'start']);
+        return response()->json(['message' => 'Status Updated', 'data'=>$task]);
+    }
+    public function undoTaskFormInDone(Request $request){
+        $id = $request->id;
+        $task = Task::findOrFail($id);
+        $task->update(['status' => 'in-progress']);
+        return response()->json(['message' => 'Status Updated', 'data'=>$task]);
+    }
 
+    public function taskDone(Request $request){
+        $id = $request->id;
+        $task = Task::findOrFail($id);
+        $task->update(['status' => 'done']);
+        return response()->json(['message' => 'Status Updated', 'data'=>$task]);
+    }
 
 }
